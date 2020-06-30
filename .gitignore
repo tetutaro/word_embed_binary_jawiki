@@ -129,3 +129,7 @@ dmypy.json
 .pyre/
 
 WikiExtractor.py
+*.bz2
+copora
+parsed
+models

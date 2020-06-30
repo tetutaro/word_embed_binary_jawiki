@@ -12,11 +12,12 @@
 - Word2Vec, fastText, SentencePiece をインストールする
     - `pip install gensim fasttext sentencepiece`
 - WikiExtractorでWikipediaダンプから本文を抽出
-    - `python WikiExtractor.py -o corpora jawiki-YYYYMMDD-pages-articles-multistream.xml.bz2`
+    - `python WikiExtractor.py --json -o corpora jawiki-YYYYMMDD-pages-articles-multistream.xml.bz2`
 - `wakati_mecab.py` で分かち書きする
-    - めんどくさいので Juman と NEologd をいっぺんにやっている
+    - めんどくさいので IPA, Juman と NEologd をいっぺんにやっている
     - `parsed` というディレクトリの下に出来る
         - `raw.txt` が WikiExtractor の出力をさらに整形して１行１文章としたもの
+        - `ipa.txt` が１行１文章半角空白区切りのIPA辞書で分かち書きしたもの
         - `juman.txt` が１行１文章半角空白区切りのJuman辞書で分かち書きしたもの
         - `neologd.txt` が１行１文章半角空白区切りのNEologd辞書で分かち書きしたもの
     - 結構時間がかかるので、ファイル分割したほうが速いかと思って、デフォルトでファイル分割、`--whole` オプションを付けるとひとつのファイルに書き出すという実装をしたけど、結局`--whole`しか試してない

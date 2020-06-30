@@ -1,26 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
-import sys
 import codecs
 import subprocess
-import glob
-import simplejson as json
-from mojimoji import han_to_zen
 import MeCab
 from logging import getLogger
 from logging import StreamHandler
 from logging import Formatter
 from logging import DEBUG
-import click
 
 # 辞書のリスト
 DICS = [
+    'ipa',    # JUMAN辞書
     'juman',    # JUMAN辞書
     'neologd',  # IPA NeologD辞書
 ]
 # 属性リストの中で単語の原型が現れる場所
 ORIGFORM_INDEX = {
+    'ipa': 6,
     'juman': 4,
     'neologd': 6,
 }
@@ -47,6 +44,7 @@ def get_taggers():
     ).stdout.rstrip()
     dicpaths = dict()
     # MacOS で Homebrew 等を使って入れた場合
+    dicpaths["ipa"] = f"{dicdir}/ipadic"
     dicpaths["juman"] = f"{dicdir}/jumandic"
     # IPA NeologD の git clone からそのまま make install した場合
     dicpaths["neologd"] = f"{dicdir}/mecab-ipadic-neologd"
@@ -123,17 +121,17 @@ def main():
     fds = parsedFile()
     # ファイルを読み込んで分かち書き
     with open(RAW_FILE, "rt") as rf:
-        l = rf.readline()
-        while l:
-            l = l.strip()
+        line = rf.readline()
+        while line:
+            line = line.strip()
             # 空行だったら次の行
-            if len(l) < 1:
-                l = rf.readline()
+            if len(line) < 1:
+                line = rf.readline()
                 continue
             # 分かち書きして書き込む
-            tokenize_sentences(fds, taggers, l)
+            tokenize_sentences(fds, taggers, line)
             # 次の行
-            l = rf.readline()
+            line = rf.readline()
     fds.close()
     return
 
